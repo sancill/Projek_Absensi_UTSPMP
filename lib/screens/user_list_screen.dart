@@ -17,8 +17,6 @@ class UserListScreen extends StatefulWidget {
 }
 
 class _UserListScreenState extends State<UserListScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
 
   @override
   void initState() {
@@ -34,11 +32,7 @@ class _UserListScreenState extends State<UserListScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,71 +40,13 @@ class _UserListScreenState extends State<UserListScreen> {
       backgroundColor: AppTheme.scaffoldBackground,
       appBar: AppBar(
         title: Text(widget.isPickerMode ? 'Pilih Mahasiswa' : 'Daftar Mahasiswa (API)'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            tooltip: 'Reload API',
-            onPressed: () {
-              Provider.of<DataProvider>(context, listen: false).loadUsers();
-            },
-          ),
-        ],
+
       ),
       body: Consumer<DataProvider>(
         builder: (context, dataProvider, _) {
           return Column(
             children: [
-              // Header Info Banner
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                color: AppTheme.primaryLight,
-                child: Row(
-                  children: [
-                    const Icon(Icons.cloud_sync_outlined, size: 20, color: AppTheme.primaryColor),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Sumber Data: Reqres.in REST API (Dio GET + Header x-api-key)',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.blue.shade900,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
-              // Search Bar
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (val) {
-                    setState(() {
-                      _searchQuery = val.trim();
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Cari nama atau NIM mahasiswa...',
-                    prefixIcon: const Icon(Icons.search, size: 20),
-                    isDense: true,
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, size: 18),
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() {
-                                _searchQuery = '';
-                              });
-                            },
-                          )
-                        : null,
-                  ),
-                ),
-              ),
 
               // Content based on ViewState
               Expanded(
@@ -176,22 +112,7 @@ class _UserListScreenState extends State<UserListScreen> {
         );
 
       case ViewState.loaded:
-        final allUsers = provider.users;
-        final filteredUsers = allUsers.where((u) {
-          final query = _searchQuery.toLowerCase();
-          return u.fullName.toLowerCase().contains(query) ||
-              u.simulatedNim.toLowerCase().contains(query) ||
-              u.email.toLowerCase().contains(query);
-        }).toList();
-
-        if (filteredUsers.isEmpty) {
-          return const Center(
-            child: Text(
-              'Tidak ada mahasiswa yang sesuai pencarian.',
-              style: TextStyle(color: Colors.grey),
-            ),
-          );
-        }
+        final filteredUsers = provider.users;
 
         return RefreshIndicator(
           onRefresh: () => provider.refreshUsers(),

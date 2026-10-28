@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController();
+
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _searchController.dispose();
+
     super.dispose();
   }
 
@@ -292,20 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          // Tombol Refresh Once (Menggunakan Future get() sesuai P01 & P05)
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            tooltip: 'Refresh Future get()',
-            onPressed: () {
-              Provider.of<JournalProvider>(context, listen: false).refreshOnce();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Memperbarui data via Future get()...'),
-                  duration: Duration(seconds: 1),
-                ),
-              );
-            },
-          ),
+          
           // Tombol Logout
           IconButton(
             icon: const Icon(Icons.logout_rounded),
@@ -395,24 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           // TextField Pencarian
-          TextField(
-            controller: _searchController,
-            onChanged: (val) => provider.setSearchQuery(val),
-            decoration: InputDecoration(
-              isDense: true,
-              hintText: 'Cari berdasarkan NIM atau keterangan...',
-              prefixIcon: const Icon(Icons.search, size: 20),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear, size: 18),
-                      onPressed: () {
-                        _searchController.clear();
-                        provider.setSearchQuery('');
-                      },
-                    )
-                  : null,
-            ),
-          ),
+
           const SizedBox(height: 8),
 
           // Chips Filter Status (Semua, Hadir, Sakit, Izin, Alpa)
