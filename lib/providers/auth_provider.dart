@@ -76,27 +76,26 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Pemetaan pesan error bahasa Indonesia (Sesuai Materi P04)
+  /// Pemetaan pesan error bahasa Indonesia menggunakan algoritma if-else (Sesuai Materi P04)
   String _pesanError(String code) {
-    switch (code) {
-      case 'user-not-found':
-      case 'invalid-credential':
-      case 'wrong-password':
-        return 'Email atau password yang Anda masukkan salah.';
-      case 'email-already-in-use':
-        return 'Email ini sudah terdaftar. Silakan login.';
-      case 'weak-password':
-        return 'Password terlalu lemah. Minimal 6 karakter.';
-      case 'invalid-email':
-        return 'Format penulisan email tidak valid.';
-      case 'configuration-not-found':
-        return 'Firebase Auth belum aktif: Aktifkan Email/Password di Firebase Console.';
-      case 'network-request-failed':
-        return 'Koneksi internet bermasalah. Periksa jaringan Anda.';
-      case 'too-many-requests':
-        return 'Terlalu banyak percobaan gagal. Silakan tunggu beberapa saat.';
-      default:
-        return 'Gagal melakukan autentikasi ($code).';
+    if (code == 'user-not-found' ||
+        code == 'invalid-credential' ||
+        code == 'wrong-password') {
+      return 'Email atau password yang Anda masukkan salah.';
+    } else if (code == 'email-already-in-use') {
+      return 'Email ini sudah terdaftar. Silakan login.';
+    } else if (code == 'weak-password') {
+      return 'Password terlalu lemah. Minimal 6 karakter.';
+    } else if (code == 'invalid-email') {
+      return 'Format penulisan email tidak valid.';
+    } else if (code == 'configuration-not-found') {
+      return 'Firebase Auth belum aktif: Aktifkan Email/Password di Firebase Console.';
+    } else if (code == 'network-request-failed') {
+      return 'Koneksi internet bermasalah. Periksa jaringan Anda.';
+    } else if (code == 'too-many-requests') {
+      return 'Terlalu banyak percobaan gagal. Silakan tunggu beberapa saat.';
+    } else {
+      return 'Gagal melakukan autentikasi ($code).';
     }
   }
 }
